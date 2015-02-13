@@ -34,25 +34,44 @@ class Extension extends \Bolt\BaseExtension
                     
                 } else {
                     
-                    $query = sprintf("INSERT INTO %s (slug, datecreated, datechanged, datepublish, ownerid, status, email) VALUES ('%s', '%s', '%s', '%s', 1, 'held', '%s')", 
+                    $token = ''. rand();
+                    $query = sprintf("INSERT INTO %s (slug, datecreated, datechanged, datepublish, ownerid, status, email, token) VALUES ('%s', '%s', '%s', '%s', 1, 'held', '%s', '%s')", 
                     $this->config['table_name'],
                     'slug-news' . rand(),
                     date("Y-m-d h:m:i"),
                     date("Y-m-d h:m:i"),
                     date("Y-m-d h:m:i"),
-                    $nemail
+                    $nemail,
+                    $token
                     );
                     
                     if($this->app['db']->executeQuery($query)){
+
+                        $body = $this->config['body'];
+                        $body .= '<br><br><a href="'.$this->app['paths']->hosturl.'?email='.$nemail.'&token='.$token.'">'.$this->config['link'].'</a>'; 
+                       
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject($this->config['subject'])
+                            ->setBody(strip_tags($body))
+                            ->addPart($body, 'text/html')
+                            ->setTo(array($nemail))
+                            ->setFrom(array($this->config['email_from'] => $this->config['email_from_name']));
                         
-                        $html = '<script> $(document).ready(function(){ alert("OK"); }); </script>';
-                        return new \Twig_Markup($html, 'UTF-8');  
+                        $res = $this->app['mailer']->send($message);
                         
+                        if($res){
+                            $html = '<script> $(document).ready(function(){ alert("OK"); }); </script>';
+                            return new \Twig_Markup($html, 'UTF-8');
+                        }else{
+                            $html = '<script> $(document).ready(function(){ alert("EMAIL ERROR"); }); </script>';
+                            return new \Twig_Markup($html, 'UTF-8');                            
+                        }
+                                               
                     }else{
                         
                         $html = '<script> $(document).ready(function(){ alert("DB ERROR"); }); </script>';
-                        return new \Twig_Markup($html, 'UTF-8'); 
-                        
+                        return new \Twig_Markup($html, 'UTF-8');    
+                                            
                     }
                 }
                              
