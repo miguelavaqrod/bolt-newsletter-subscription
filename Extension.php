@@ -17,8 +17,18 @@ class Extension extends \Bolt\BaseExtension
     }
 
     public function checkNewsletter()
-    {
+    {                
         if($this->app['request']->getMethod() == 'POST'){
+            
+            $nemail = $this->app['request']->get($this->config['newsletter_field']);
+            
+            if ($nemail != '') {
+                $html = '<script> $(document).ready(function(){ alert("'.$nemail.'"); }); </script>';
+                return new \Twig_Markup($html, 'UTF-8');                
+            }else{
+                $html = '<script> $(document).ready(function(){ alert("ERROR"); }); </script>';
+                return new \Twig_Markup($html, 'UTF-8');
+            }
 
         }
     }
