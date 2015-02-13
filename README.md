@@ -13,3 +13,5 @@ You are free to create the subscription form. Just take into account to set "POS
 The default form field is "newsletter_email". You can customize it by editing the `config.yml` file.
 
     name: another_name
+
+You can also customize the subject field of the email sent and a small sentence in the email's body.
