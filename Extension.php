@@ -42,12 +42,17 @@ class Extension extends \Bolt\BaseExtension
                     date("Y-m-d h:m:i"),
                     $nemail
                     );
+                    
                     if($this->app['db']->executeQuery($query)){
+                        
                         $html = '<script> $(document).ready(function(){ alert("OK"); }); </script>';
-                        return new \Twig_Markup($html, 'UTF-8');                        
+                        return new \Twig_Markup($html, 'UTF-8');  
+                        
                     }else{
+                        
                         $html = '<script> $(document).ready(function(){ alert("DB ERROR"); }); </script>';
-                        return new \Twig_Markup($html, 'UTF-8');                        
+                        return new \Twig_Markup($html, 'UTF-8'); 
+                        
                     }
                 }
                              
