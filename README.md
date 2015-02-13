@@ -6,7 +6,9 @@ Use it by simply placing the following in your template, near the subscription f
 
     {{ checknewsletter }}
 
-You are free to create the subscription form. Just take into account to set POSt as action and, obvioulsy, include the field name set in config.yml.
+The extension will first email users with a link so thay can verify themselves. Once verified, the status of the database record will be "Published".
+
+You are free to create the subscription form. Just take into account to set "POST" as form method and, obvioulsy, include the field name set in config.yml.
 
 The default form field is "newsletter_email". You can customize it by editing the `config.yml` file.
 
