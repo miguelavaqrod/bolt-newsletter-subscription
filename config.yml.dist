@@ -1,1 +1,4 @@
 newsletter_field: newsletter_email
+
+subject: Email from my website
+body: Please follow the link to verify your email.
