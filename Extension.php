@@ -1,7 +1,7 @@
 <?php
 // Newsletter Subscription Extension for Bolt
 
-namespace Bolt\Extension\miguelavaqrod\newssubscription;
+namespace Bolt\Extension\miguelavaqrod\newsletter;
 
 class Extension extends \Bolt\BaseExtension
 {
