@@ -22,7 +22,7 @@ class Extension extends \Bolt\BaseExtension
             
             $nemail = $this->app['request']->get($this->config['newsletter_field']);
             
-            if ($nemail != '') {
+            if (filter_var($nemail, FILTER_VALIDATE_EMAIL)) {
                 $html = '<script> $(document).ready(function(){ alert("'.$nemail.'"); }); </script>';
                 return new \Twig_Markup($html, 'UTF-8');                
             }else{
