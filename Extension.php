@@ -12,8 +12,9 @@ class Extension extends \Bolt\BaseExtension
 
     public function initialize()
     {
-        $this->addTwigFunction('checknewsletter', 'checkNewsletter');
-
+        if ($this->app['config']->getWhichEnd() == 'frontend') {
+            $this->addTwigFunction('checknewsletter', 'checkNewsletter');
+        }
     }
 
     public function checkNewsletter()
