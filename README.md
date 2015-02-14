@@ -38,5 +38,5 @@ subscribers:
     viewless: true
     default_status: published
     searchable: false
-    show_on_dashboard: false
+    show_on_dashboard: false 
     
