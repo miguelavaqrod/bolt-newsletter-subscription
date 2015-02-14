@@ -1,5 +1,6 @@
 
-table_name: bolt_newsletter
+table_name: bolt_susbcribers
+
 newsletter_field: newsletter_email
 
 email_from: info@mywebsite.com
