@@ -36,7 +36,7 @@ Right now you need to manually create the content type for this extension. As an
                 readonly: true
                 class: narrow
         viewless: true
-        default_status: published
+        default_status: held
         searchable: false
         show_on_dashboard: false 
     
