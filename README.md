@@ -60,4 +60,4 @@ Returned values:
 
 This extension does not force any form style or similar.
 It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
-Additionally, it just inform you about the status of the function using raw strings, so you later can do whatever you want with them (for example, make use of modals to inform the user, but you are free to make whatever you want).
+Additionally, it just inform you about the status of the action using raw numeric strings (returned values), so you later can do whatever you want with them (for example, compare them and make use of modals to inform the user, but you are free to make whatever you want).
