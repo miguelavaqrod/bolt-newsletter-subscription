@@ -1,10 +1,8 @@
-NOT FINISHED YET!!!!!
-
 Newsletter Subscription Extension
 =================================
 
 "Newsletter Susbscription" is a small extension to save registered emails in database.
-Use it by simply placing the following in your template, near the subscription form:
+Use it by simply placing the following in your template, inside a `script` tag at the bottom of the page, and make whatever use you need with returning values:
 
     {{ checknewsletter }}
 
@@ -45,13 +43,16 @@ Right now you need to manually create the content type for this extension. As an
 Returned values:
 
     When inserting a new subscriber
-    0: Email sent. All OK
-    1: Error sending email
-    2: Error saving email in DB
-    3: Email already registered
-    99: Email not valid
+        0: Email sent. All OK
+        1: Error sending email
+        2: Error saving email in DB
+        3: Email already registered
+        99: Email not valid
     When verifying an email
-    10: Email verified
-    11: Error saving verified email info to DB
-    12: Error in email or token sent for verifying 
+        10: Email verified
+        11: Error saving verified email info to DB
+        12: Error in email or token sent for verifying 
 
+This extension does not force any form style or similar.
+It let you create the email subscription form freely. You just need to include the field set in `config.yml`.
+Additionally, it just inform you about the status of the function using raw strings, so you later can do whatever you want with them (for example, make use of madals to inform the user, but you are free to make whatever you want).
