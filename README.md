@@ -2,7 +2,7 @@ Newsletter Subscription Extension
 =================================
 
 "Newsletter Susbscription" is a small extension to save registered emails in database.
-Use it by simply placing the following in your template, inside a `script` tag at the bottom of the page, and make whatever use you need with returning values:
+Use it by simply placing the following in your template, for example, inside a `script` tag at the bottom of the page, and make whatever use you need with returning values:
 
     {{ checknewsletter }}
 
