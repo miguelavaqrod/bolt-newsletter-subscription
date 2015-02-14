@@ -40,7 +40,9 @@ Right now you need to manually create the content type for this extension. As an
         viewless: true
         default_status: held
         searchable: false
-        show_on_dashboard: false 
+        show_on_dashboard: false
+        
+----
     
 Returned values:
 
