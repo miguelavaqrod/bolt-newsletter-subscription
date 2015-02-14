@@ -43,7 +43,7 @@ class Extension extends \Bolt\BaseExtension
             $id = $this->app['db']->executeQuery($query)->fetch();
             if (!empty($id['id'])) {
                 
-                $query = sprintf("UPDATE %s SET datepublish = '%s', status = 'published' WHERE id = %s", $this->config['table_name'], date("Y-m-d h:m:i"), $id['id']);
+                $query = sprintf("UPDATE %s SET datepublish = '%s', status = 'published' WHERE id = %s", $this->config['table_name'], date("Y-m-d H:m:i"), $id['id']);
                 if($this->app['db']->executeQuery($query)){
                     
                     $html = '10';
@@ -81,9 +81,9 @@ class Extension extends \Bolt\BaseExtension
                     $query = sprintf("INSERT INTO %s (slug, datecreated, datechanged, datepublish, ownerid, status, email, token) VALUES ('%s', '%s', '%s', '%s', 1, 'held', '%s', '%s')", 
                     $this->config['table_name'],
                     'slug-news' . rand(),
-                    date("Y-m-d h:m:i"),
-                    date("Y-m-d h:m:i"),
-                    date("Y-m-d h:m:i"),
+                    date("Y-m-d H:m:i"),
+                    date("Y-m-d H:m:i"),
+                    date("Y-m-d H:m:i"),
                     $nemail,
                     $token
                     );
