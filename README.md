@@ -58,5 +58,5 @@ Returned values:
         12: Error in email or token sent for verifying 
 
 This extension does not force any form style or similar.
-It let you create the email subscription form freely. You just need to include the field set in `config.yml`.
+It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
 Additionally, it just inform you about the status of the function using raw strings, so you later can do whatever you want with them (for example, make use of modals to inform the user, but you are free to make whatever you want).
