@@ -18,8 +18,35 @@ class Extension extends \Bolt\BaseExtension
     }
 
     public function checkNewsletter()
-    {                
-        if($this->app['request']->getMethod() == 'POST'){
+    {
+        if($this->app['request']->getMethod() == 'GET' && $this->app['request']->get('email') != '' && $this->app['request']->get('token') != ''){
+        
+            $nemail = $this->app['request']->get('email');
+            $token = $this->app['request']->get('token');
+            $query = sprintf("SELECT id FROM %s WHERE email = '%s' AND token = '%s';", $this->config['table_name'], $nemail, $token);
+            $id = $this->app['db']->executeQuery($query)->fetch();
+            if (!empty($id['id'])) {
+                
+                $query = sprintf("UPDATE %s SET datepublish = '%s', status = 'published' WHERE id = %s", $this->config['table_name'], date("Y-m-d h:m:i"), $id['id']);
+                if($this->app['db']->executeQuery($query)){
+                    
+                    $html = '<script> $(document).ready(function(){ alert("EMAIL VERIFIED"); }); </script>';
+                    return new \Twig_Markup($html, 'UTF-8');
+                                    
+                }else{
+                    
+                    $html = '<script> $(document).ready(function(){ alert("DB ERROR UPDATING"); }); </script>';
+                    return new \Twig_Markup($html, 'UTF-8');                    
+                }
+                
+            }else{
+                
+                $html = '<script> $(document).ready(function(){ alert("EMAIL OR TOKEN ERROR"); }); </script>';
+                return new \Twig_Markup($html, 'UTF-8');
+                                
+            }          
+        
+        }elseif($this->app['request']->getMethod() == 'POST'){
             
             $nemail = $this->app['request']->get($this->config['newsletter_field']);
             
@@ -48,7 +75,7 @@ class Extension extends \Bolt\BaseExtension
                     if($this->app['db']->executeQuery($query)){
 
                         $body = $this->config['body'];
-                        $body .= '<br><br><a href="'.$this->app['paths']->hosturl.'?email='.$nemail.'&token='.$token.'">'.$this->config['link'].'</a>'; 
+                        $body .= '<br><br><a href="'.$this->app['paths']['rooturl'].'?email='.$nemail.'&token='.$token.'">'.$this->config['link'].'</a>'; 
                        
                         $message = \Swift_Message::newInstance()
                             ->setSubject($this->config['subject'])
