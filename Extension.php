@@ -1,6 +1,22 @@
 <?php
 // Newsletter Subscription Extension for Bolt
 
+/*
+RETURNED VALUES:
+
+0: Email sent. All OK
+1: Error sending email
+2: Error saving email in DB
+3: Email already registered
+
+10: Email verified
+11: Error saving verified email info to DB
+12: Error in email or token sent for verifying 
+
+99: Email not valid
+
+*/
+
 namespace Bolt\Extension\miguelavaqrod\newsletter;
 
 class Extension extends \Bolt\BaseExtension
@@ -30,18 +46,18 @@ class Extension extends \Bolt\BaseExtension
                 $query = sprintf("UPDATE %s SET datepublish = '%s', status = 'published' WHERE id = %s", $this->config['table_name'], date("Y-m-d h:m:i"), $id['id']);
                 if($this->app['db']->executeQuery($query)){
                     
-                    $html = '<script> $(document).ready(function(){ alert("EMAIL VERIFIED"); }); </script>';
+                    $html = '10';
                     return new \Twig_Markup($html, 'UTF-8');
                                     
                 }else{
                     
-                    $html = '<script> $(document).ready(function(){ alert("DB ERROR UPDATING"); }); </script>';
+                    $html = '11';
                     return new \Twig_Markup($html, 'UTF-8');                    
                 }
                 
             }else{
                 
-                $html = '<script> $(document).ready(function(){ alert("EMAIL OR TOKEN ERROR"); }); </script>';
+                $html = '12';
                 return new \Twig_Markup($html, 'UTF-8');
                                 
             }          
@@ -56,7 +72,7 @@ class Extension extends \Bolt\BaseExtension
                 $id = $this->app['db']->executeQuery($query)->fetch();
                 if (!empty($id['id'])) {
                     
-                    $html = '<script> $(document).ready(function(){ alert("ALREADY REGISTERED"); }); </script>';
+                    $html = '3';
                     return new \Twig_Markup($html, 'UTF-8');
                     
                 } else {
@@ -87,16 +103,16 @@ class Extension extends \Bolt\BaseExtension
                         $res = $this->app['mailer']->send($message);
                         
                         if($res){
-                            $html = '<script> $(document).ready(function(){ alert("OK"); }); </script>';
+                            $html = '0';
                             return new \Twig_Markup($html, 'UTF-8');
                         }else{
-                            $html = '<script> $(document).ready(function(){ alert("EMAIL ERROR"); }); </script>';
+                            $html = '1';
                             return new \Twig_Markup($html, 'UTF-8');                            
                         }
                                                
                     }else{
                         
-                        $html = '<script> $(document).ready(function(){ alert("DB ERROR"); }); </script>';
+                        $html = '2';
                         return new \Twig_Markup($html, 'UTF-8');    
                                             
                     }
@@ -104,7 +120,7 @@ class Extension extends \Bolt\BaseExtension
                              
             }else{
                 
-                $html = '<script> $(document).ready(function(){ alert("ERROR"); }); </script>';
+                $html = '99';
                 return new \Twig_Markup($html, 'UTF-8');
                 
             }
