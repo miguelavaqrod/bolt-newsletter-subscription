@@ -61,3 +61,38 @@ Returned values:
 This extension does not force any form style or similar.
 It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
 Additionally, it just inform you about the status of the action using raw numeric strings (returned values), so you later can do whatever you want with them (for example, compare them and make use of modals to inform the user, but you are free to make whatever you want).
+
+For example:
+Inserting a script tag in the bottom of the page (jQuery ready version)...
+
+    <script>
+     var res = '{{ checknewsletter() }}';
+     $(document).ready(function(){
+        switch(res){
+            case '0':
+                alert('Verification email sent.');
+                break;
+            case '1':
+                alert('Error sending verification email.');
+                break;
+            case '2':
+                alert('Error saving subscriber to database.');
+                break;
+            case '3':
+                alert('Subscriber email already registered.');
+                break;
+            case '99':
+                alert('Subscriber email not valid.');
+                break;
+            case '10':
+                alert('Subscriber email verified.');
+                break;
+            case '11':
+                alert('Error saving verified subscriber to database.');
+                break;
+            case '12':
+                alert('Error in subscriber email or token sent for verifying.');
+                break;
+        }
+     });
+    </script>
