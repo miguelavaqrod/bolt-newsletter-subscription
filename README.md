@@ -18,6 +18,8 @@ You can also customize the subject field of the email sent and a small sentence 
 
 ----
 
+Be sure to setup email smtp settings in your Bolt config file, so the extension can send verifying emails.
+
 Right now you need to manually create the content type for this extension. As an example:
 
 
