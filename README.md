@@ -42,3 +42,16 @@ Right now you need to manually create the content type for this extension. As an
         searchable: false
         show_on_dashboard: false 
     
+Returned values:
+
+    When inserting a new subscriber
+    0: Email sent. All OK
+    1: Error sending email
+    2: Error saving email in DB
+    3: Email already registered
+    99: Email not valid
+    When verifying an email
+    10: Email verified
+    11: Error saving verified email info to DB
+    12: Error in email or token sent for verifying 
+
