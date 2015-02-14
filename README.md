@@ -47,16 +47,16 @@ Right now you need to manually create the content type for this extension. As an
 Returned values:
 
     When inserting a new subscriber
-        0: Email sent. All OK
-        1: Error sending email
-        2: Error saving email in DB
-        3: Email already registered
-        99: Email not valid
+        0: Verifying email sent. All OK
+        1: Error sending verifying email
+        2: Error saving subscriber email in DB
+        3: Subscriber email already registered
+        99: Subscriber email not valid
         
     When verifying an email
-        10: Email verified
+        10: Subscriber email verified
         11: Error saving verified email info to DB
-        12: Error in email or token sent for verifying 
+        12: Error in subscriber email or token sent for verifying 
 
 This extension does not force any form style or similar.
 It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
