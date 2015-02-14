@@ -52,6 +52,7 @@ Returned values:
         2: Error saving email in DB
         3: Email already registered
         99: Email not valid
+        
     When verifying an email
         10: Email verified
         11: Error saving verified email info to DB
