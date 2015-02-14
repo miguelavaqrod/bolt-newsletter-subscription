@@ -2,7 +2,7 @@
     "name": "miguelavaqrod/newsletter",
     "description": "A small extension save newsletter email subscriptions.",
     "type": "bolt-extension",
-    "keywords": [newsletter],
+    "keywords": ["newsletter"],
     "require": {
         "bolt/bolt": ">=2.0.0,<3.0.0"
     },
