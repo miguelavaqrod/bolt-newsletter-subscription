@@ -1,6 +1,6 @@
 {
     "name": "miguelavaqrod/newsletter",
-    "description": "A small extension save newsletter email subscriptions.",
+    "description": "A small extension to save newsletter email subscriptions.",
     "type": "bolt-extension",
     "keywords": ["newsletter"],
     "require": {
