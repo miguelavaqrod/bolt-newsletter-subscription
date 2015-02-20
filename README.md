@@ -8,7 +8,7 @@ Use it by simply placing the following in your template, for example, inside a `
 
 The extension will first email users with a link so thay can verify themselves. Once verified, the status of the database record will be "Published".
 
-You are free to create the subscription form. Just take into account to set "POST" as form method and, obvioulsy, include the field name set in config.yml as an `input` form control.
+You are free to create the subscription form. Just take into account to set "POST" as form method and, obviously, include the field name set in config.yml as an `input` form control.
 
 The default form field is "newsletter_email". You can customize it by editing the `config.yml` file.
 
