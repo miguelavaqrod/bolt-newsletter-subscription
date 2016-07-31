@@ -2,9 +2,14 @@
     "name": "miguelavaqrod/newsletter",
     "description": "An extension to save newsletter email subscriptions.",
     "type": "bolt-extension",
-    "keywords": ["newsletter"],
+    "keywords": [
+        "newsletter"
+    ],
     "require": {
-        "bolt/bolt": ">=2.0.0,<3.0.0"
+        "bolt/bolt": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.7"
     },
     "license": "MIT",
     "authors": [
@@ -13,12 +18,20 @@
             "email": "miguela.vaqrod@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
-        "files": [
-            "init.php"
-        ],
         "psr-4": {
-            "Bolt\\Extension\\miguelavaqrod\\newsletter\\": ""
+            "Bolt\\Extension\\Miguelavaqrod\\Newsletter\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bolt\\Extension\\Miguelavaqrod\\Newsletter\\Tests\\": "tests",
+            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
+        }
+    },
+    "extra": {
+        "bolt-class": "Bolt\\Extension\\Miguelavaqrod\\Newsletter\\NewsletterExtension"
     }
 }

@@ -1,7 +1,10 @@
 Newsletter Subscription Extension
 =================================
 
-"Newsletter Susbscription" is a small extension to save registered emails in database.
+### ! Update v1.0 to v2.0
+`table_name` config is no more used and replace by `contenttype`. Basically, you have to change line `table_name: bolt_subscribers` by `contenttype: subscribers`on your local `app/config/extensions/newsletter.miguelavaqrod.yml`.
+
+"Newsletter Subscription" is a small extension to save registered emails in database.
 Use it by simply placing the following in your template, for example, inside a `script` tag at the bottom of the page, and make whatever use you need with returning values:
 
     {{ checknewsletter() }}
@@ -16,13 +19,35 @@ The default form field is "newsletter_email". You can customize it by editing th
 
 You can also customize the subject field of the email sent and a small sentence in the email's body.
 
+### Requirements
+- Bolt 3.x installation
+
+### Installation
+1. Login to your Bolt installation
+2. Go to "View/Install Extensions" (Hover over "Extras" menu item)
+3. Type `newsletter` into the input field
+4. Click on the extension name
+5. Click on "Browse Versions"
+6. Click on "Install This Version" on the latest stable version
+
+### Configuration
+```(yml)
+contenttype: subscribers           # Entity name where subscribers are saved
+newsletter_field: newsletter_email # HTTP GET Parameter = Form field name
+
+email_from: info@mywebsite.com     # Sender's email for confirmation email
+email_from_name: My Website        # Sender's name for confirmation email
+
+subject: Email from my website     # Subject for confirmation email
+body: Please follow the link to verify your email.
+link: Click Here                   # Link label for confirmation email
+```
+
 ----
 
 Be sure to setup email smtp settings in your Bolt config file, so the extension can send verifying emails.
 
 Right now you need to manually create the content type for this extension. As an example:
-
-
 
     subscribers:
         name: Subscribers
@@ -41,9 +66,9 @@ Right now you need to manually create the content type for this extension. As an
         default_status: held
         searchable: false
         show_on_dashboard: false
-        
+
 ----
-    
+
 Returned values:
 
     When inserting a new subscriber
@@ -52,11 +77,11 @@ Returned values:
         2: Error saving subscriber email in DB
         3: Subscriber email already registered
         99: Subscriber email not valid
-        
+    
     When verifying an email
         10: Subscriber email verified
         11: Error saving verified email info to DB
-        12: Error in subscriber email or token sent for verifying 
+        12: Error in subscriber email or token sent for verifying
 
 This extension does not force any form style or similar.
 It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
@@ -70,13 +95,13 @@ Inserting a script tag in the bottom of the page (jQuery ready version)...
      $(document).ready(function(){
         switch(res){
             case '0':
-                alert('Verification email sent.');
+                alert('Verifying email sent. All OK.');
                 break;
             case '1':
-                alert('Error sending verification email.');
+                alert('Error sending verifying email.');
                 break;
             case '2':
-                alert('Error saving subscriber to database.');
+                alert('Error saving subscriber email in DB.');
                 break;
             case '3':
                 alert('Subscriber email already registered.');
@@ -88,7 +113,7 @@ Inserting a script tag in the bottom of the page (jQuery ready version)...
                 alert('Subscriber email verified.');
                 break;
             case '11':
-                alert('Error saving verified subscriber to database.');
+                alert('Error saving verified email info to DB.');
                 break;
             case '12':
                 alert('Error in subscriber email or token sent for verifying.');
