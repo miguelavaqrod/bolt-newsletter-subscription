@@ -1,0 +1,11 @@
+# table_name: bolt_subscribers     # Replace by contenttype
+contenttype: subscribers           # Entity name where subscribers are saved
+newsletter_field: newsletter_email # HTTP GET Parameter = Form field name
+
+email_from: info@mywebsite.com     # Sender's email for confirmation email
+email_from_name: My Website        # Sender's name for confirmation email
+
+subject: Email from my website     # Subject for confirmation email
+body: Please follow the link to verify your email.
+link: Click Here                   # Link label for confirmation email
+
