@@ -9,3 +9,4 @@ subject: Email from my website     # Subject for confirmation email
 body: Please follow the link to verify your email.
 link: Click Here                   # Link label for confirmation email
 
+path: subscribe 				   # Path to page that contains your subscription signup
