@@ -106,6 +106,9 @@ Inserting a script tag in the bottom of the page (jQuery ready version)...
             case '3':
                 alert('Subscriber email already registered.');
                 break;
+            case '20':
+                alert('Your Email has been successfully removed from our system.');
+                break;
             case '99':
                 alert('Subscriber email not valid.');
                 break;
