@@ -125,7 +125,7 @@ class NewsletterExtension extends SimpleExtension
                         'slug'   => 'slug-news' . rand(),
                         'email'  => $nemail,
                         'token'  => $token,
-                        'status' => 'published'
+                        'status' => 'held'
                     ]);
 
                     if ( $repo->save($subscription) !== false ) {
