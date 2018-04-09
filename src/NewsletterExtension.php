@@ -14,7 +14,8 @@ use Bolt\Storage\Entity\Content;
  * 1: Error sending email
  * 2: Error saving subscriber email in DB
  * 3: Subscriber email already registered
- *
+ * 20: Unsubscribed email
+
  * 10: Subscriber email verified
  * 11: Error saving verified email info to DB
  * 12: Error in subscriber email or token sent for verifying
@@ -70,8 +71,16 @@ class NewsletterExtension extends SimpleExtension
                 'token' => $token
             ]);
 
-            if (   $result !== false
+            if (   $result !== false // Record found
                 && ! empty($result->getId() ) ) {
+
+                if ($app['request']->get('unsubscribe') == 'yes') { // Unsubscribe requested - delete the record.
+
+                    $result = $repo->delete($result);
+
+                    return new \Twig_Markup('20', 'UTF-8');
+                }
+
                 $result->setStatus('published');
 
                 if ( $repo->save($result) !== false ) {
@@ -88,7 +97,7 @@ class NewsletterExtension extends SimpleExtension
                 return new \Twig_Markup('12', 'UTF-8');
             }
         }
-        elseif ( $app['request']->getMethod() == 'POST' ) {
+        elseif ( $app['request']->getMethod() == 'POST' ) { // If new subscriber is being added
 
             $nemail = $app['request']->get($config['newsletter_field'] );
 
@@ -112,12 +121,17 @@ class NewsletterExtension extends SimpleExtension
                     'email' => $nemail
                 ]);
 
-                 if (  $result != false
-                    && ! empty($result->getId() ) ) {
-                    // Subscriber email already registered
-                    return new \Twig_Markup('3', 'UTF-8');
+                 if (  $result != false && ! empty($result->getId() ) ) {
+                    if ($result->status == 'published') {
+                        // Subscriber email already registered
+                        return new \Twig_Markup('3', 'UTF-8');
+                    } else {
+                        // Subscriber already exists but is not verified. Delete and Recreate.
+                        $result = $repo->delete($result);
+                    }
+                    
                 }
-                else {
+                
                     $token = '' . rand();
                     $repo  = $app['storage']->getRepository($contenttype);
                     $subscription = new Content([
@@ -125,12 +139,12 @@ class NewsletterExtension extends SimpleExtension
                         'slug'   => 'slug-news' . rand(),
                         'email'  => $nemail,
                         'token'  => $token,
-                        'status' => 'published'
+                        'status' => 'held'
                     ]);
 
                     if ( $repo->save($subscription) !== false ) {
                         $body  = $config['body'];
-                        $body .= '<br><br><a href="' . $app['paths']['rooturl'] . '?email=' . $nemail . '&token=' . $token . '">' . $config['link'] . '</a>';
+                        $body .= '<br><br><a href="' . $app['paths']['rooturl'] . $config['path'] . '?email=' . $nemail . '&token=' . $token . '">' . $config['link'] . '</a>';
 
                         $message = \Swift_Message::newInstance()
                             ->setSubject($config['subject'] )
