@@ -132,51 +132,49 @@ class NewsletterExtension extends SimpleExtension
                     
                 }
                 
-                    $token = '' . rand();
-                    $repo  = $app['storage']->getRepository($contenttype);
-                    $subscription = new Content([
-                        'title'  => $nemail,
-                        'slug'   => 'slug-news' . rand(),
-                        'email'  => $nemail,
-                        'token'  => $token,
-                        'status' => 'held'
-                    ]);
+                $token = '' . rand();
+                $repo  = $app['storage']->getRepository($contenttype);
+                $subscription = new Content([
+                    'title'  => $nemail,
+                    'slug'   => 'slug-news' . rand(),
+                    'email'  => $nemail,
+                    'token'  => $token,
+                    'status' => 'held'
+                ]);
 
-                    if ( $repo->save($subscription) !== false ) {
-                        $body  = $config['body'];
-                        $body .= '<br><br><a href="' . $app['paths']['rooturl'] . $config['path'] . '?email=' . $nemail . '&token=' . $token . '">' . $config['link'] . '</a>';
+                if ( $repo->save($subscription) !== false ) {
+                    $body  = $config['body'];
+                    $body .= '<br><br><a href="' . $app['paths']['rooturl'] . $config['path'] . '?email=' . $nemail . '&token=' . $token . '">' . $config['link'] . '</a>';
 
-                        $message = \Swift_Message::newInstance()
-                            ->setSubject($config['subject'] )
-                            ->setBody(strip_tags($body) )
-                            ->addPart($body, 'text/html')
-                            ->setTo(array($nemail) )
-                            ->setFrom(array($config['email_from'] => $config['email_from_name']) );
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject($config['subject'] )
+                        ->setBody(strip_tags($body) )
+                        ->addPart($body, 'text/html')
+                        ->setTo(array($nemail) )
+                        ->setFrom(array($config['email_from'] => $config['email_from_name']) );
 
-                        $res = $app['mailer']->send($message);
+                    $res = $app['mailer']->send($message);
 
-                        if ( $res ) {
-                            // Verifying email sent. All OK.
-                            return new \Twig_Markup('0', 'UTF-8');
-                        }
-                        else {
-                            // Error sending verifying email.
-                            return new \Twig_Markup('1', 'UTF-8');
-                        }
+                    if ( $res ) {
+                        // Verifying email sent. All OK.
+                        return new \Twig_Markup('0', 'UTF-8');
                     }
                     else {
-                        // Error saving subscriber email in DB
-                        return new \Twig_Markup('2', 'UTF-8');
+                        // Error sending verifying email.
+                        return new \Twig_Markup('1', 'UTF-8');
                     }
                 }
-            }
-            else {
-                // Subscriber email not valid
-                return new \Twig_Markup('99', 'UTF-8');
+                else {
+                    // Error saving subscriber email in DB
+                    return new \Twig_Markup('2', 'UTF-8');
+                }
             }
         }
+        else {
+            // Subscriber email not valid
+            return new \Twig_Markup('99', 'UTF-8');
+        }
     }
-
     /**
      * {@inheritdoc}
      */
