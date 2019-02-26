@@ -2,22 +2,11 @@ Newsletter Subscription Extension
 =================================
 
 ### ! Update v1.0 to v2.0
-`table_name` config is no more used and replace by `contenttype`. Basically, you have to change line `table_name: bolt_subscribers` by `contenttype: subscribers`on your local `app/config/extensions/newsletter.miguelavaqrod.yml`.
+`table_name` config is no more used and replace by `contenttype`. Basically, you have to change line `table_name: bolt_subscribers` by `contenttype: subscribers` on your local `app/config/extensions/newsletter.miguelavaqrod.yml`.
 
-"Newsletter Subscription" is a small extension to save registered emails in database.
-Use it by simply placing the following in your template, for example, inside a `script` tag at the bottom of the page, and make whatever use you need with returning values:
+---
 
-    {{ checknewsletter() }}
-
-The extension will first email users with a link so thay can verify themselves. Once verified, the status of the database record will be "Published".
-
-You are free to create the subscription form. Just take into account to set "POST" as form method and, obviously, include the field name set in config.yml as an `input` form control.
-
-The default form field is "newsletter_email". You can customize it by editing the `config.yml` file.
-
-    newsletter_field: another_name
-
-You can also customize the subject field of the email sent and a small sentence in the email's body.
+**"Newsletter Subscription" is a small extension to save registered emails in database.**
 
 ### Requirements
 - Bolt 3.x installation
@@ -29,26 +18,8 @@ You can also customize the subject field of the email sent and a small sentence 
 4. Click on the extension name
 5. Click on "Browse Versions"
 6. Click on "Install This Version" on the latest stable version
-
-### Configuration
-```(yml)
-contenttype: subscribers           # Entity name where subscribers are saved
-newsletter_field: newsletter_email # HTTP GET Parameter = Form field name
-
-email_from: info@mywebsite.com     # Sender's email for confirmation email
-email_from_name: My Website        # Sender's name for confirmation email
-
-subject: Email from my website     # Subject for confirmation email
-body: Please follow the link to verify your email.
-link: Click Here                   # Link label for confirmation email
-```
-
-----
-
-Be sure to setup email smtp settings in your Bolt config file, so the extension can send verifying emails.
-
-Right now you need to manually create the content type for this extension. As an example:
-
+7. Right now you need to manually create the content type for this extension. As an example:
+```YAML
     subscribers:
         name: Subscribers
         singular_name: Subscriber
@@ -66,11 +37,19 @@ Right now you need to manually create the content type for this extension. As an
         default_status: held
         searchable: false
         show_on_dashboard: false
+```
 
-----
 
-Returned values:
+### Details
+Use it by simply placing the following twig function in your template, and make whatever use you need with returning values (see section below):
+```Twig
+    {{ checknewsletter() }}
+```
 
+When the twig function is processed, it will check request params and returned values if necessary. It will email users with a link so they can verify themselves. Once verified, the status of the database record will be "Published".
+
+Returned values for twig function `checknewsletter()`:
+```YAML
     When inserting a new subscriber
         0: Verifying email sent. All OK
         1: Error sending verifying email
@@ -82,15 +61,12 @@ Returned values:
         10: Subscriber email verified
         11: Error saving verified email info to DB
         12: Error in subscriber email or token sent for verifying
-
-This extension does not force any form style or similar.
-It lets you create the email subscription form freely. You just need to include the field set in `config.yml`.
-Additionally, it just inform you about the status of the action using raw numeric strings (returned values), so you later can do whatever you want with them (for example, compare them and make use of modals to inform the user, but you are free to make whatever you want).
+```
 
 For example:
 Inserting a script tag in the bottom of the page (jQuery ready version)...
-
-    <script>
+```html
+<script>
      var res = '{{ checknewsletter() }}';
      $(document).ready(function(){
         switch(res){
@@ -109,7 +85,6 @@ Inserting a script tag in the bottom of the page (jQuery ready version)...
             case '20':
                 alert('Your Email has been successfully removed from our system.');
                 break;
-            case '99':
                 alert('Subscriber email not valid.');
                 break;
             case '10':
@@ -123,4 +98,50 @@ Inserting a script tag in the bottom of the page (jQuery ready version)...
                 break;
         }
      });
-    </script>
+</script>
+```
+
+Or add a twig section :
+```Twig
+{% set checknewsletter = checknewsletter() %}
+{% if checknewsletter == '0' %}
+    <p class="callout warning">Verifying email sent. All OK.</p>
+{% elseif checknewsletter == '1' or checknewsletter == '2' or checknewsletter == '11' or checknewsletter == '12' %}
+    <p class="callout alert">Getting a problem, please <a href="/contact">contact us</a>.</p>
+{% elseif checknewsletter == '3' %}
+    <p class="callout secondary">Subscriber email already registered.</p>
+{% elseif checknewsletter == '10' %}
+    <p class="callout success">Thanks, you'll receive our next news.</p>
+{% elseif checknewsletter == '20' %}
+    <p class="callout success">Your email has been successfully removed from our system.</p>
+{% endif %}
+```
+
+You are free to create the subscription form. Just take into account to set "POST" as form method and, obviously, include the field name set in config.yml as an `input` form control. By example :
+```html
+<form method="post" action="#">
+  <input type="email" value="" name="newsletter_email" placeholder="Your email…">
+  <button type="submit">Subscribe</button>
+</form>
+```
+
+Be sure to **setup email smtp settings in your Bolt config file**, so the extension can send verifying emails.
+
+### Configuration
+The default form field is "newsletter_email". You can customize it by editing the `config.yml` file. You can also customize the subject field of the email sent and a small sentence in the email's body.
+```YAML
+contenttype: subscribers           # Entity name where subscribers are saved
+newsletter_field: newsletter_email # HTTP GET Parameter = Form field name
+
+email_from: info@mywebsite.com     # Sender's email for confirmation email
+email_from_name: My Website        # Sender's name for confirmation email
+
+subject: Email from my website     # Subject for confirmation email
+body: Please follow the link to verify your email.
+link: Click Here                   # Link label for confirmation email
+
+path: subscribe 				   # Path to page that contains your subscription signup
+```
+
+### Unsubscribe
+You could enable unsubscription with this extension. When the twig function `checknewsletter()` is processed, it checks if request method is `GET` and if there are valid params `email`, `token` and `unsubscribe=yes`. So if you add a link to your template (or your email), with GET params `email=xxx&token=yyy&unsubscribe=yes`, users could unsubscribe themself.
